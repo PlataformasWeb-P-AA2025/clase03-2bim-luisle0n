@@ -7,10 +7,12 @@
   <tr>
     <th><b>Nombre</b></th>
     <th><b>Apellido</b></th>
+    <th><b>Inicial Nombre </b></th>
     <th><b>Cedula</b></th>
     <th><b>Suma Cedula</b></th>
     <th><b>Lista telefonos</b></th>
     <th><b>Opciones</b></th>
+     
   </tr>
   {% for e in estudiantes %}
   <tr>
@@ -21,11 +23,15 @@
       {{e.apellido}}
     </td>
     <td>
+      {{e.get_inical}}
+    </td>
+    <td>
       {{e.cedula}}
     </td>
     <td>
-      {{e.sumaCedula}}
+      {{e.get_suma_cedula}}
     </td>
+     
     <td>
       <ul>
         {% for numero in e.mis_numeros_telefonicos.all %}

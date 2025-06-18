@@ -1,0 +1,13 @@
+<h2>Crear País</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    {{ formulario.as_p }}
+
+    <button type="submit">Guardar</button>
+
+</form>
+
+[<a href="{% url 'index' %}">inicio</a>]
+

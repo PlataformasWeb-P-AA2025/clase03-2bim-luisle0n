@@ -12,19 +12,16 @@ from administrativo.forms import *
 # Create your views here.
 
 def index(request):
-    """
-        Listar los registros del modelo Estudiante,
-        obtenidos de la base de datos.
-    """
-    # a través del ORM de django se obtiene
-    # los registros de la entidad; el listado obtenido
-    # se lo almacena en una variable llamada
-    # estudiantes
     estudiantes = Estudiante.objects.all()
-    # en la variable tipo diccionario llamada informacion_template
-    # se agregará la información que estará disponible
-    # en el template
-    informacion_template = {'estudiantes': estudiantes, 'numero_estudiantes': len(estudiantes)}
+    paises = Pais.objects.all()
+    
+    informacion_template = {
+        'estudiantes': estudiantes,
+        'numero_estudiantes': estudiantes.count(),
+        'paises': paises,
+        'numero_paises': paises.count()
+    }
+    
     return render(request, 'index.html', informacion_template)
 
 
@@ -44,6 +41,22 @@ def obtener_estudiante(request, id):
     informacion_template = {'estudiante': estudiante}
     return render(request, 'obtener_estudiante.html', informacion_template)
 
+def obtener_pais(request, id):
+    """
+        Listar los registros del modelo Pais,
+        obtenidos de la base de datos.
+    """
+    # a través del ORM de django se obtiene
+    # los registros de la entidad; el listado obtenido
+    # se lo almacena en una variable llamada
+    # estudiantes
+    pais = Pais.objects.get(pk=id)
+    # en la variable tipo diccionario llamada informacion_template
+    # se agregará la información que estará disponible
+    # en el template
+    informacion_template = {'pais': pais}
+    return render(request, 'obtener_paises.html', informacion_template)
+
 
 def crear_estudiante(request):
     """
@@ -61,6 +74,20 @@ def crear_estudiante(request):
 
     return render(request, 'crearEstudiante.html', diccionario)
 
+def crear_pais(request):
+    """
+    Crear un nuevo país usando PaisForm
+    """
+    if request.method == 'POST':
+        formulario = PaisForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(index)  # o redirige a donde quieras después de guardar
+    else:
+        formulario = PaisForm()
+    
+    diccionario = {'formulario': formulario}
+    return render(request, 'crearPais.html', diccionario)
 
 def editar_estudiante(request, id):
     """
@@ -87,5 +114,12 @@ def eliminar_estudiante(request, id):
     """
     """
     estudiante = Estudiante.objects.get(pk=id)
+    estudiante.delete()
+    return redirect(index)
+
+def eliminar_pais(request, id):
+    """
+    """
+    estudiante = Pais.objects.get(pk=id)
     estudiante.delete()
     return redirect(index)
